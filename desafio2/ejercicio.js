@@ -34,7 +34,7 @@ function doceCuotas(valor) {
 }
 do {
     let ingresoProducto = parseInt(prompt("Ingrese su numero correspondiente \n 1-Pack Beginner \n 2-Pack Advanced \n 3-Pack Premium \n 4-Pack Pro  "))
-    if ((ingresoProducto != "") && (ingresoProducto <= 4) && (ingresoProducto > 0)) {
+    if ((ingresoProducto !== "") && (ingresoProducto <= 4) && (ingresoProducto > 0)) {
         switch (ingresoProducto) {
 
             case 1:
