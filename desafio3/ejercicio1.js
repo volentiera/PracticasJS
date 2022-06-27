@@ -9,7 +9,7 @@ let cantidad = 0
 let precio = 0
 
 let packAComprar = ""
-
+let sumatoriaFinal = 0
 //funciones
 
 function continuar() {
@@ -99,9 +99,8 @@ function mostrarResultado(packs){
 }
 
 function sumatoriaTotal(packs){
-    let sumatoriaFinal = 0
     for (const valor of packs){
-        sumatoriaFinal += valor.sumatoriaTotal()
+        sumatoriaFinal += valor.precio
     }  
     return sumatoriaFinal
 }
@@ -170,8 +169,6 @@ function menu(){
 do {
     let packs = elegirPack()
     mostrarResultado(packs)
-    let entrada = prompt("Ingrese SI si quiere ver el total final")
-    if (entrada == "SI"){
     alert("El costo total de los packs es: " + sumatoriaTotal(packs))
-    }
+    
 } while (continuar())
