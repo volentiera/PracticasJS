@@ -1,4 +1,4 @@
-//Programa que al ingresar un numero del 1 al 4 te define el precio sacando iva y luego podes elegir la opcion de pago 
+//Programa que al ingresar un numero del 1 al 4 te define el precio sacando iva y se van sumando los precios de los packs
 //y se puede seguir comprando.
 
 //variables
@@ -25,15 +25,6 @@ function continuar() {
 }
 
 
-
-const seisCuotas = valor => valor / 6
-
-const porcentaje = valor => valor * 0.10
-
-const mitadEfectivo = valor => valor * 0.5
-
-const doceCuotas = valor => (valor / 24) + ((valor / 24) * 0.10)
-
 class Pack {
     constructor(nombre, productos, cantidad, precio) {
         this.nombre = nombre.toUpperCase()
@@ -41,8 +32,8 @@ class Pack {
         this.cantidad = cantidad
         this.precio = precio
     }
-    iva = () => this.precio * 0.21
-    sumatoriaTotal = () => this.precio * iva()
+    
+    sumatoriaTotal = () => this.precio
     
 }
 
@@ -100,7 +91,7 @@ function mostrarResultado(packs){
 
 function sumatoriaTotal(packs){
     for (const valor of packs){
-        sumatoriaFinal += valor.precio
+        sumatoriaFinal += (valor.precio * 0.21) + (valor.precio)
     }  
     return sumatoriaFinal
 }
@@ -113,5 +104,5 @@ do {
     let packs = elegirPack()
     mostrarResultado(packs)
     alert("El costo total de los packs es: " + sumatoriaTotal(packs))
-    
+
 } while (continuar())
