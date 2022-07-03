@@ -14,6 +14,7 @@ let packs = []
 const iva = 0.21
 let sumarTotalesConIva = 0
 let sumaFinal = 0
+let ingreso = ""
 
 //funciones
 
@@ -132,7 +133,7 @@ function main(){
         let packs = elegirPack()
         
         
-        let ingreso = prompt("Ingrese SI para ver el total final en consola")
+        ingreso = prompt("Ingrese SI para ver el total final en consola")
         
         if (ingreso == "SI") {
             mostrarPacksComprados(packs)
@@ -142,6 +143,11 @@ function main(){
         
         
     } while (continuar())
+    if (ingreso != "SI"){
+        mostrarPacksComprados(packs)
+        sumaSinImpuestos(packs)
+        sumaConImpuestos(packs)
+    }
 }
 main()
 
