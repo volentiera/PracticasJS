@@ -1,7 +1,7 @@
 //Programa que al ingresar un numero del 1 al 4 te define el precio sacando iva, se van sumando los precios de los packs
 //y se puede seguir comprando.
 
-//variables
+//variables y constantes
 
 let nombre = ""
 let productos = ""
@@ -9,10 +9,15 @@ let cantidad = 0
 let precio = 0
 let id = 0
 let packAComprar = ""
-
+let sumarTotales = 0
 let packs = []
+const iva = 0.21
+let sumarTotalesConIva = 0
+let sumaFinal = 0
+
 //funciones
 
+//funcion para ver si continua el bucle o no
 
 function continuar() {
     let x = prompt("Precione aceptar o Enter si desea seguir comprando.")
@@ -26,7 +31,7 @@ function continuar() {
     }
 }
 
-
+//funcion constructora
 
 class Pack {
     constructor(id, nombre, productos, cantidad, precio) {
@@ -37,6 +42,8 @@ class Pack {
         this.precio = precio
     }
 }
+
+//funcion principal
 
 function elegirPack() {
     let ingresoPack = parseInt(prompt("Ingrese su numero correspondiente \n 1-Pack Frutas \n 2-Pack Verduras \n 3-Pack Carnes \n 4-Pack de todo "))
@@ -87,6 +94,8 @@ function elegirPack() {
     return packs
 }
 
+//utilizo for each
+
 function mostrarPacksComprados(packs){
     packs.forEach( (element) => {
         
@@ -97,45 +106,44 @@ function mostrarPacksComprados(packs){
     })
 }
 
-const sumarTotales = packs.reduce((acumulador, elemento) => acumulador + elemento.precio, 0)
 
+//utilizo reduce
 
-function sumatoriaTotal(packs){
-    let sumatoriaFinal = 0
-    for (const valor of packs){
-        sumatoriaFinal += (valor.precio)
-    }  
-    return sumatoriaFinal
+function sumaSinImpuestos(packs){
+    sumarTotales = packs.reduce(
+    (acumulador, elemento) => acumulador + elemento.precio, 0)
+    return console.log(`El costo total de los packs sin impuestos es: ${sumarTotales}`)
 }
 
-function sumatoriaIvaTotal(){
-    let sumatoriaIva = 0
-    for (const valor of packs){
-        sumatoriaIva += (valor.precio * 0.21) + (valor.precio)
-    }  
-    return Math.round(sumatoriaIva)
+function sumaConImpuestos(packs){
+    sumarTotalesConIva = packs.reduce(
+    (acumulador, elemento) => acumulador + elemento.precio, 0)
+
+    sumaFinal = sumarTotalesConIva * iva + sumarTotalesConIva
+
+    return console.log(`El costo total de los packs con impuestos es: ${Math.round(sumaFinal)}`)
 }
 
 
 //programa
+function main(){
+    do {
+    
+        let packs = elegirPack()
+        
+        
+        let ingreso = prompt("Ingrese SI para ver el total final en consola")
+        
+        if (ingreso == "SI") {
+            mostrarPacksComprados(packs)
+            sumaSinImpuestos(packs)
+            sumaConImpuestos(packs)
+        }
+        
+        
+    } while (continuar())
+}
+main()
 
-do {
-    
-    let packs = elegirPack()
-    
-
-    alert(`El costo total de los packs sin impuestos es: ${sumatoriaTotal(packs)}`)
-    alert(`El costo total de los packs es: ${sumatoriaIvaTotal(packs)}`)
-    
-    let ingreso = prompt("Ingrese SI para ver el total final en consola")
-    
-    if (ingreso == "SI") {
-        mostrarPacksComprados(packs)
-    }
-    
-    console.log(sumarTotales)
-} while (continuar())
-
-console.log(sumarTotales)
 
 
