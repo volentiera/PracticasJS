@@ -44,7 +44,7 @@ function validarLogin(event){
     contrasenia = inputContrasenia.value
     log = new Login(usuario, contrasenia)
     login.push(log)
-    logear.reset()
+    
 
     almacenarLogin()
     
@@ -59,15 +59,20 @@ function obtenerLoginSessionStorage() {
 }
 
 function crearElementosDespuesDeLogear(){
-    
-    if (login.usuario == "usuario" && login.contrasenia == "contrasenia"){
-        console.log("Esta bien")
+    let loginAlmacenado = new Login(sessionStorage.getItem("login").usuario, sessionStorage.getItem("login").contrasenia)
+    console.log(loginAlmacenado)
+    if (loginAlmacenado.usuario == usuario && loginAlmacenado.contrasenia == contrasenia){
+        console.log("esta bien")
     }
+
 }
+
 
 obtenerLoginSessionStorage()
 inicializarEventoLogin()
 crearElementosDespuesDeLogear()
+
+
 
 
 
