@@ -15,6 +15,7 @@ let inputUsuario = document.getElementById("inputUsuario")
 let inputContrasenia = document.getElementById("inputContrasenia")
 let botonLogin = document.getElementById("botonLogin")
 
+
 let formulario = document.getElementById("formulario")
 let contenedorProductos = document.getElementById("contenedorProductos")
 let inputId = document.getElementById("inputId")
@@ -22,7 +23,6 @@ let inputNombre = document.getElementById("inputNombre")
 let inputMarca = document.getElementById("inputMarca")
 let inputPrecio = document.getElementById("inputPrecio")
 let inputTipo = document.getElementById("inputTipo")
-
 
 
 //clases
@@ -74,6 +74,7 @@ function crearElementosDespuesDeLogear(){
         let usuarioLogeado = new Login(login.usuario, login.contrasenia)
         if (usuarioLogeado.usuario == "1234" && usuarioLogeado.contrasenia == "1234"){
             crearElementos()
+            
         }
     }else {
         console.log("usuario sin logearse")
@@ -83,8 +84,6 @@ function crearElementosDespuesDeLogear(){
     inicializarEventoLogin()
 }
 function crearElementos(){
-    let formulario = document.createElement("form")
-    formulario.id = "formulario"
     formulario.innerHTML =`
             <div class="mb-3">
             <label class="form-label">ID:</label>
@@ -125,13 +124,12 @@ function crearElementos(){
             <div class="d-grid gap-2">
                 <button type="submit" class="btn btn-primary">Registrar</button>
             </div>`
-    contenedorProductos.append(formulario)
 }
 
 function inicializarEventoStorageProductos(){
     formulario.onsubmit = (event) => validarFormulario(event)
+    
 }
-
 function validarFormulario(event){
     event.preventDefault()
     //generarId()
@@ -154,22 +152,24 @@ function generarId(productos){
     }
     return id
 }*/
-function  almacenarProductosLocalStorage(){
+function almacenarProductosLocalStorage(){
     localStorage.setItem("listaProductos", JSON.stringify(productos))
 }
 function obtenerProductosLocalStorage() {
     let productosAlmacenados = localStorage.getItem("listaProductos");
-    
     if (productosAlmacenados !== null) {
         productos = JSON.parse(productosAlmacenados);
     }
 }
+
 function main(){
     obtenerLoginSessionStorage()
     inicializarEventoLogin()
     crearElementosDespuesDeLogear()
+
     inicializarEventoStorageProductos()
     obtenerProductosLocalStorage()
+
 }
 main()
 
