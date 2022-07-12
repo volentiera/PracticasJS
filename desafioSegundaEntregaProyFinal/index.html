@@ -30,7 +30,8 @@
                             <a class="nav-link" href="#">Link</a>
                         </li>
                     </ul>
-                    <form id="logear" class="d-flex">
+                    <form id="logear" class="d-flex loginsito">
+                        
                         <input id="inputUsuario" class="form-control me-2" type="text" placeholder="Usuario" aria-label="Search">
                         <input id="inputContrasenia" class="form-control me-2" type="password" placeholder="Contraseña" aria-label="Search">
                         <button id="botonLogin" class="btn btn-outline-success" type="submit">Ingresar</button>
@@ -41,7 +42,45 @@
     </header>
     <div id="contenedorProductos" class="container">
         <form id="formulario">
-
+            <div class="mb-3">
+                <label class="form-label">ID:</label>
+                <input
+                    type="number"
+                    class="form-control"
+                    id="inputId"
+                />
+                </div>
+                <div class="mb-3">
+                <label class="form-label">Nombre:</label>
+                <input
+                    type="text"
+                    class="form-control"
+                    id="inputNombre"
+                />
+                </div>
+    
+                <div class="mb-3">
+                <label class="form-label">Marca:</label>
+                <input
+                    type="text"
+                    class="form-control"
+                    id="inputMarca"
+                />
+                </div>
+    
+                <div class="mb-3">
+                    <label class="form-label">Tipo:</label>
+                    <input type="text" class="form-control" id="inputTipo" />
+                </div>
+    
+                <div class="mb-3">
+                    <label class="form-label">Precio:</label>
+                    <input type="number" class="form-control" id="inputPrecio" />
+                </div>
+    
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary">Registrar</button>
+                </div>
         </form>
     </div>
     <div class="container mt-4">
@@ -60,22 +99,8 @@
     <div class="container">
         <div class="row">
             <div class="col-4"></div>
-            <div class="col-8">
-                <span class="m-3">
-                    ID:
-                </span>
-                <span class="m-3">
-                    Nombre:
-                </span>
-                <span class="m-3">
-                    Marca:
-                </span>
-                <span class="m-3">
-                    Tipo:
-                </span>
-                <span class="m-3">
-                    Precio:
-                </span>
+            <div id="cartas" class="col-8">
+
             </div>
         </div>
     </div>
