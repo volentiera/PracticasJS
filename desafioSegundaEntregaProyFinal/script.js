@@ -11,6 +11,7 @@ let marca
 let precio
 let producto
 let cartaCreada
+let loginAlmacenado
 
 let inputUsuario = document.getElementById("inputUsuario")
 let inputContrasenia = document.getElementById("inputContrasenia")
@@ -44,16 +45,16 @@ class Productos {
     }
 }
 
-function inicializarEventoLogin(){
+function inicializarEventoLogin() {
     botonLogin.onclick = (event) => validarLogin(event)
 }
 
-function almacenarLogin(){
+function almacenarLogin() {
     sessionStorage.setItem("login", JSON.stringify(login));
 }
 
 
-function validarLogin(){
+function validarLogin() {
     usuario = inputUsuario.value
     contrasenia = inputContrasenia.value
     log = new Login(usuario, contrasenia)
@@ -68,29 +69,33 @@ function obtenerLoginSessionStorage() {
     }
 }
 
-function crearElementosDespuesDeLogear(){
-    
-    let loginAlmacenado = JSON.parse(sessionStorage.getItem("login"))
-    if (loginAlmacenado.length > 0){
-        login = loginAlmacenado[0]
-        let usuarioLogeado = new Login(login.usuario, login.contrasenia)
-        if (usuarioLogeado.usuario == "1234" && usuarioLogeado.contrasenia == "1234"){
-            eliminarElementosHTML()
-            bienvenida(login)
+function crearElementosDespuesDeLogear() {
+    if (loginAlmacenado != undefined) {
+        loginAlmacenado = JSON.parse(sessionStorage.getItem("login"))
+        if (loginAlmacenado.length > 0) {
+            login = loginAlmacenado[0]
+            let usuarioLogeado = new Login(login.usuario, login.contrasenia)
+            if (usuarioLogeado.usuario == "1234" && usuarioLogeado.contrasenia == "1234") {
+                eliminarElementosHTML()
+                bienvenida(login)
+            }
+        } else {
+            console.log("usuario sin logearse")
         }
-    }else {
-        console.log("usuario sin logearse")
+
+        obtenerLoginSessionStorage()
+        inicializarEventoLogin()
+    } else {
+        return
     }
-    
-    obtenerLoginSessionStorage()
-    inicializarEventoLogin()
 }
 
-function inicializarEventoStorageProductos(){
+function inicializarEventoStorageProductos() {
     formulario.onsubmit = (event) => validarFormulario(event)
-    
+
 }
-function validarFormulario(event){
+
+function validarFormulario(event) {
     event.preventDefault()
     //generarId()
     id = inputId.value
@@ -101,45 +106,51 @@ function validarFormulario(event){
     producto = new Productos(id, nombre, marca, tipo, precio)
     productos.push(producto)
     formulario.reset()
-    
+
     mostrarProductos()
     almacenarProductosLocalStorage()
 }
-function eliminarElementosHTML(){
+
+function eliminarElementosHTML() {
     inputUsuario.remove()
     inputContrasenia.remove()
     botonLogin.remove()
 }
-function bienvenida(login){
+
+function bienvenida(login) {
     logear.innerHTML = `
     <h2>Bienvenido ${login.usuario}</h2>
     `
     logear.append()
 }
-function almacenarProductosLocalStorage(){
+
+function almacenarProductosLocalStorage() {
     localStorage.setItem("listaProductos", JSON.stringify(productos))
 }
+
 function obtenerProductosLocalStorage() {
     let productosAlmacenados = localStorage.getItem("listaProductos");
     if (productosAlmacenados !== null) {
         productos = JSON.parse(productosAlmacenados);
     }
 }
-function mostrarProductos(){
-        productos.forEach((producto) => {
-            cartaCreada = document.createElement("div");
-            cartaCreada.className = ("card col-4")
-            cartaCreada.innerHTML = `
+
+function mostrarProductos() {
+    productos.forEach((producto) => {
+        cartaCreada = document.createElement("div");
+        cartaCreada.className = ("card col-4")
+        cartaCreada.innerHTML = `
             <div class="card-tittle">
             ${producto.nombre}
             </div>
             <div class="card-text">${producto.marca}</div>
             <div class="card-text">${producto.precio}</td>
             `;
-        });
-        cartas.append(cartaCreada)
+    });
+    cartas.append(cartaCreada)
 }
-function main(){
+
+function main() {
     obtenerLoginSessionStorage()
     inicializarEventoLogin()
     crearElementosDespuesDeLogear()
@@ -150,12 +161,3 @@ function main(){
 
 }
 main()
-
-
-
-
-
-
-
-
-
