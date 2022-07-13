@@ -70,7 +70,7 @@ function obtenerLoginSessionStorage() {
 }
 
 function crearElementosDespuesDeLogear() {
-    if (loginAlmacenado != undefined) {
+
         loginAlmacenado = JSON.parse(sessionStorage.getItem("login"))
         if (loginAlmacenado.length > 0) {
             login = loginAlmacenado[0]
@@ -82,12 +82,9 @@ function crearElementosDespuesDeLogear() {
         } else {
             console.log("usuario sin logearse")
         }
-
         obtenerLoginSessionStorage()
         inicializarEventoLogin()
-    } else {
-        return
-    }
+    
 }
 
 function inicializarEventoStorageProductos() {
@@ -153,6 +150,7 @@ function mostrarProductos() {
 function main() {
     obtenerLoginSessionStorage()
     inicializarEventoLogin()
+
     crearElementosDespuesDeLogear()
 
     inicializarEventoStorageProductos()
