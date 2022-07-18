@@ -1,5 +1,5 @@
 
-
+// dejo comentadas algunas cosas que no me salieron.
 
 //clases 
 
@@ -11,8 +11,18 @@ class Producto {
         this.tipo = tipo
         this.talle = talle
         this.marca = marca
-        this.precio = precio
+        this.precio = (precio * iva) + precio
     }
+    
+
+    //-------------------------------- no se donde llamar este metodo para que aplique, o si esta bien hecho.
+    // aumentoPorTalle(){
+    //     let totalTalle = 0
+    //     if (this.talle == "XL"){
+    //         totalTalle = this.precio = this.precio + (this.precio * 0.20)
+    //     }
+    //     return totalTalle
+    // }
 }
 
 class Carrito {
@@ -25,8 +35,8 @@ class Carrito {
         let total = 0
         for (let i = 0; i < this.productos.length; i++) {
             total = total + this.productos[i].precio
-        }
-        return total
+
+        }return total
     }
 
 }
@@ -41,11 +51,17 @@ let carrito
 let botones
 let arrayDeBotones
 let botonEliminar
+let divCarrito
+let botonesEliminar
+let carritoGuardado
+const iva = 0.21
+
 // funciones
 function inicializarCatalogoProductos() {
+    
     producto1 = new Producto(1, "Camiseta River", "camisetaRiver.jpg", "Indumentaria", "S", "Addidas", 8500)
     producto2 = new Producto(2, "Botines F500", "botinesAddidas.jpg", "Calzado", "38", "Addidas", 15600)
-    producto3 = new Producto(3, "Remera Deportiva", "remeraNike.jpg", "Indumentaria", "L", "Nike", 5800)
+    producto3 = new Producto(3, "Remera Deportiva", "remeraNike.jpg", "Indumentaria", "XL", "Nike", 5800)
     producto4 = new Producto(4, "Raqueta Tennis", "raquetaHead.jpg", "Accesorio", "15", "Head", 16500)
     catalogoProductos.push(producto1)
     catalogoProductos.push(producto2)
@@ -86,7 +102,7 @@ function crearCarrito(producto) {
                 <h5>Precio: $${producto.precio}</h5>
             </div>
             <div class="col">
-                <h5>Talle: ${producto.talle}</h5>
+                <h5>Talle: ${producto.talle }</h5>
             </div>
             <div class="col">
                 <a class="btn btn-primary botonEliminar">X</a>
@@ -99,12 +115,12 @@ function crearCarrito(producto) {
 
 
 function limpiarCarrito() {
-    let divCarrito = document.getElementById("carrito")
+    divCarrito = document.getElementById("carrito")
     divCarrito.innerHTML = ""
 }
 
 function actualizarCarrito(carrito) {
-    let divCarrito = document.getElementById("carrito")
+    divCarrito = document.getElementById("carrito")
     carrito.productos.forEach(producto => {
         divCarrito.innerHTML += crearCarrito(producto)
     })
@@ -119,23 +135,17 @@ function renovarStorage() {
     localStorage.removeItem("carrito")
     localStorage.setItem("carrito", JSON.stringify(carrito))
 }
-function eliminarStorage() {
-    botonEliminar = document.getElementsByClassName("botonEliminar")
-    botonEliminar.onclick = localStorage.removeItem("carrito")
 
-}
 
 function guardarCarrito() {
     window.addEventListener('DOMContentLoaded', (e) => {
         let storage = JSON.parse((localStorage.getItem("carrito")))
-        let carritoGuardado = new Carrito(storage.id, storage.productos)
+        carritoGuardado = new Carrito(storage.id, storage.productos)
         storage.productos.forEach(producto => {
             carritoGuardado.productos.push(producto)
         })
-        eliminarStorage(carritoGuardado)
         limpiarCarrito()
         actualizarCarrito(carritoGuardado)
-        
     })
 }
 
@@ -164,6 +174,21 @@ function agregarAlCarrito() {
     })
 }
 
+// ------------ intente hacer que el boton eliminar elimine un objeto del carrito dependiendo de cual apretas pero no me salio
+// function eliminarDelCarrito() {
+//     botonesEliminar = document.getElementsByClassName("botonEliminar")
+//     arrayDeBotones = Array.from(botonesEliminar)
+//     arrayDeBotones.forEach(boton => {
+//         boton.addEventListener("click", (e) => {
+//             let productoSeleccionadoAEliminar = carritoGuardado.find(producto => producto.id == e.target.id)
+//             carrito.productos.splice(productoSeleccionadoAEliminar)
+//             limpiarCarrito()
+//             actualizarCarrito(carrito)
+//             renovarStorage()
+//         })
+//     })
+// }
+
 
 //funcion principal
 function main() {
@@ -171,5 +196,7 @@ function main() {
     crearCartaHtml()
     guardarCarrito()
     agregarAlCarrito()
+    
+    //eliminarDelCarrito()
 }
 main()
