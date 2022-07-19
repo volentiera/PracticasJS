@@ -31,9 +31,9 @@ function inicializarElementos() {
     inputComentarios = document.getElementById("inputComentarios");
 }
 
+
 function inicializarEventos() {
-    botonSubmit.onclick = (event) => validarFormulario(event);
-    
+    botonSubmit.onclick = (event) => validarFormulario(event)
 }
 
 function validarFormulario(event) {
@@ -46,7 +46,12 @@ function validarFormulario(event) {
     let contacto = new Contacto(nombre, apellido, email, tipo, comentarios);
     contactos.push(contacto);
     formulario.reset()
-    alert(`Bienvenid@ ${nombre}, Nos pondremos en conatacto pronto por su ${tipo}`)
+    botonSubmit.onclick = (event) => mostrarAlert(event)
+    Swal.fire({
+        icon: 'success',
+        title: `Bienvenido: ${nombre}`,
+        text: `En breve responderemo su ${tipo}`,
+    })
     almacenarContactoLocalStorage();
 }
 
