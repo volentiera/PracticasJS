@@ -1,3 +1,4 @@
+//linea 73 y 48 hago sweetalerts y las muestro en linea 66 y 69 dependiendo si es correcto o no el input
 
 let contactos = []
 
@@ -8,6 +9,14 @@ let inputEmail
 let inputTipo
 let inputComentarios
 let botonSubmit
+let nombre
+let apellido
+let email
+let tipo
+let comentarios
+
+let contacto
+
 
 
 class Contacto {
@@ -30,45 +39,39 @@ function inicializarElementos() {
     inputComentarios = document.getElementById("inputComentarios")
 }
 
-
+// inicia el programa al hacer click en el boton
 function inicializarEventos() {
     botonSubmit.onclick = (event) => validarFormulario(event)
 }
 
-
-//--------------------------------utilizo el or----------------------------
-
-
-function validacionesInputsFormulario(contacto) {
-    contacto.nombre || ingresoValorDefault(contacto)
-    contacto.apellido || ingresoValorDefault(contacto)
-    contacto.email || ingresoValorDefault(contacto)
-    contacto.comentarios || ingresoValorDefault(contacto)
+// muestra alert si los valores ingresados son no validos
+function alertError(){
+        Swal.fire({
+            icon: 'error',
+            title: `Ingrese Nombre, Apellido y Email`,
+        })
 }
 
-function ingresoValorDefault(contacto) {
-    contacto.nombre = null
-    contacto.apellido = null
-    contacto.email = null
-    contacto.comentarios = null
-}
-
-function validarFormulario() {
-    
-    let nombre = inputNombre.value
-    let apellido = inputApellido.value
-    let email = inputEmail.value
-    let tipo = inputTipo.value
-    let comentarios = inputComentarios.value
-    let contacto = new Contacto(nombre, apellido, email, tipo, comentarios)
-    validacionesInputsFormulario(contacto)
+function validarFormulario(event) {
+    event.preventDefault()
+    nombre = inputNombre.value
+    apellido = inputApellido.value
+    email = inputEmail.value
+    tipo = inputTipo.value
+    comentarios = inputComentarios.value
+    contacto = new Contacto(nombre, apellido, email, tipo, comentarios)
+    if ((nombre !== "") && (apellido !== "") && (email !== "")){
     contactos.push(contacto)
     formulario.reset()
-    botonSubmit.addEventListener("click", mostrarAlert(contacto))
-    almacenarContactoLocalStorage(contacto)
+    botonSubmit.addEventListener("click", alertSuccess(contacto))
+    almacenarContactoLocalStorage()
+    }else {
+        botonSubmit.addEventListener("click", alertError())
+    }
 }
 
-function mostrarAlert(contacto) {
+// muestra alert si los valores ingresados son validos
+function alertSuccess(contacto) {
     Swal.fire({
         icon: 'success',
         title: `Bienvenido: ${contacto.nombre}`,
@@ -78,8 +81,8 @@ function mostrarAlert(contacto) {
 
 
 
-function almacenarContactoLocalStorage(contacto) {
-    (contacto.nombre, contacto.apellido, contacto.email) !== null && localStorage.setItem("Contactos", JSON.stringify(contactos))
+function almacenarContactoLocalStorage() {
+        localStorage.setItem("Contactos", JSON.stringify(contactos))
 }
 
 function obtenerContactoLocalStorage() {
