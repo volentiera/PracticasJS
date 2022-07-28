@@ -63,7 +63,15 @@ function inicializarCatalogoProductos() {
     catalogoProductos.push(producto4)
     console.log(catalogoProductos)
     })
-    
+
+    // producto1 = new Producto(1, "Camiseta River", "camisetaRiver.jpg", "Indumentaria", "S", "Addidas", 8500)
+    // producto2 = new Producto(2, "Botines F500", "botinesAddidas.jpg", "Calzado", "38", "Addidas", 15600)
+    // producto3 = new Producto(3, "Remera Deportiva", "remeraNike.jpg", "Indumentaria", "XL", "Nike", 5800)
+    // producto4 = new Producto(4, "Raqueta Tennis", "raquetaHead.jpg", "Accesorio", "15", "Head", 16500)
+    // catalogoProductos.push(producto1)
+    // catalogoProductos.push(producto2)
+    // catalogoProductos.push(producto3)
+    // catalogoProductos.push(producto4)
 }
 
 function crearCarta(producto) {
