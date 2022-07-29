@@ -13,7 +13,7 @@ class Producto {
         this.marca = marca
         this.precio = (precio * iva) + precio
     }
-    
+
 }
 
 class Carrito {
@@ -45,6 +45,7 @@ let botonEliminar
 let divCarrito
 let botonesEliminar
 let carritoGuardado
+let producto
 const iva = 0.21
 
 // funciones
@@ -52,27 +53,25 @@ function inicializarCatalogoProductos() {
     fetch("https://62e2a4b4b54fc209b87dbcaf.mockapi.io/catalogoProductos")
     .then((resultado) => resultado.json())
     .then((data) => {
-    producto1 = data[0]
-    console.log(producto1)
-    producto2 = data[1]
-    producto3 = data[2]
-    producto4 = data[3]
-    catalogoProductos.push(producto1)
-    catalogoProductos.push(producto2)
-    catalogoProductos.push(producto3)
-    catalogoProductos.push(producto4)
-    console.log(catalogoProductos)
+        for (let i = 0; i < data.length; i++){
+            producto = new Producto(data[i].id, data[i].nombre, data[i].imagen, data[i].tipo, data[i].talle, data[i].marca, data[i].precio)
+            catalogoProductos.push(producto)
+            console.log(producto)
+        }
+        // producto1 = new Producto(data[0].id, data[0].nombre, data[0].imagen, data[0].tipo, data[0].talle, data[0].marca, data[0].precio)
+        // producto2 = new Producto(data[1].id, data[1].nombre, data[1].imagen, data[1].tipo, data[1].talle, data[1].marca, data[1].precio)
+        // producto3 = new Producto(data[2].id, data[2].nombre, data[2].imagen, data[2].tipo, data[2].talle, data[2].marca, data[2].precio)
+        // producto4 = new Producto(data[3].id, data[3].nombre, data[3].imagen, data[3].tipo, data[3].talle, data[3].marca, data[3].precio)
+    
+        // catalogoProductos.push(producto1)
+        // catalogoProductos.push(producto2)
+        // catalogoProductos.push(producto3)
+        // catalogoProductos.push(producto4)
     })
-
-    // producto1 = new Producto(1, "Camiseta River", "camisetaRiver.jpg", "Indumentaria", "S", "Addidas", 8500)
-    // producto2 = new Producto(2, "Botines F500", "botinesAddidas.jpg", "Calzado", "38", "Addidas", 15600)
-    // producto3 = new Producto(3, "Remera Deportiva", "remeraNike.jpg", "Indumentaria", "XL", "Nike", 5800)
-    // producto4 = new Producto(4, "Raqueta Tennis", "raquetaHead.jpg", "Accesorio", "15", "Head", 16500)
-    // catalogoProductos.push(producto1)
-    // catalogoProductos.push(producto2)
-    // catalogoProductos.push(producto3)
-    // catalogoProductos.push(producto4)
+    
+    console.log(catalogoProductos)
 }
+
 
 function crearCarta(producto) {
     let crearCarta = `    
