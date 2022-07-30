@@ -58,8 +58,9 @@ function inicializarCatalogoProductos() {
         for (let i = 0; i < data.length; i++){
             producto = new Producto(data[i].id, data[i].nombre, data[i].imagen, data[i].tipo, data[i].talle, data[i].marca, data[i].precio)
             catalogoProductos.push(producto)
-            
+            console.log(producto)
         }
+        
     })
     
     console.log(catalogoProductos)
@@ -93,10 +94,12 @@ function renovarStorage() {
 function guardarCarrito() {
     window.addEventListener('DOMContentLoaded', (e) => {
         let storage = JSON.parse((localStorage.getItem("carrito")))
-        carritoGuardado = new Carrito(storage.id, storage.productos)
-        storage.productos.forEach(producto => {
-            carritoGuardado.productos.push(producto)
-        })
+        if (storage != null){
+            carritoGuardado = new Carrito(storage.id, storage.productos)
+            storage.productos.forEach(producto => {
+                carritoGuardado.productos.push(producto)
+            })
+        }
     })
 }
 
@@ -128,7 +131,7 @@ function agregarAlCarrito() {
 //funcion principal
 function main() {
     inicializarCatalogoProductos()
-    console.log(catalogoProductos)
+    console.log(producto)
     crearCartaHtml()
     guardarCarrito()
     agregarAlCarrito()
