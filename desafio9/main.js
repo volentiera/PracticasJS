@@ -33,10 +33,6 @@ class Carrito {
 }
 //todo lo global
 let catalogoProductos = []
-let producto1
-let producto2
-let producto3
-let producto4
 let cardsDiv
 let carrito
 let botones
@@ -47,29 +43,27 @@ let botonesEliminar
 let carritoGuardado
 let producto
 const iva = 0.21
+let data
+let resultado
+
 
 // funciones
 function inicializarCatalogoProductos() {
-    fetch("https://62e2a4b4b54fc209b87dbcaf.mockapi.io/catalogoProductos")
+    fetch("https://62e2a4b4b54fc209b87dbcaf.mockapi.io/catalogoProductos",{
+        method: "GET"
+    })
     .then((resultado) => resultado.json())
     .then((data) => {
+        
         for (let i = 0; i < data.length; i++){
             producto = new Producto(data[i].id, data[i].nombre, data[i].imagen, data[i].tipo, data[i].talle, data[i].marca, data[i].precio)
             catalogoProductos.push(producto)
-            console.log(producto)
+            
         }
-        // producto1 = new Producto(data[0].id, data[0].nombre, data[0].imagen, data[0].tipo, data[0].talle, data[0].marca, data[0].precio)
-        // producto2 = new Producto(data[1].id, data[1].nombre, data[1].imagen, data[1].tipo, data[1].talle, data[1].marca, data[1].precio)
-        // producto3 = new Producto(data[2].id, data[2].nombre, data[2].imagen, data[2].tipo, data[2].talle, data[2].marca, data[2].precio)
-        // producto4 = new Producto(data[3].id, data[3].nombre, data[3].imagen, data[3].tipo, data[3].talle, data[3].marca, data[3].precio)
-    
-        // catalogoProductos.push(producto1)
-        // catalogoProductos.push(producto2)
-        // catalogoProductos.push(producto3)
-        // catalogoProductos.push(producto4)
     })
     
     console.log(catalogoProductos)
+    
 }
 
 
@@ -112,6 +106,7 @@ function guardarCarrito() {
 function crearCartaHtml() {
     cardsDiv = document.getElementById("cards")
     catalogoProductos.forEach(producto => {
+        console.log(catalogoProductos)
         cardsDiv.innerHTML += crearCarta(producto)
     })
 }
@@ -133,6 +128,7 @@ function agregarAlCarrito() {
 //funcion principal
 function main() {
     inicializarCatalogoProductos()
+    console.log(catalogoProductos)
     crearCartaHtml()
     guardarCarrito()
     agregarAlCarrito()
