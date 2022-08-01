@@ -32,7 +32,7 @@ class Carrito {
 
 }
 //todo lo global
-let catalogoProductos = []
+let catalogoProductos = [];
 let cardsDiv
 let carrito
 let botones
@@ -48,30 +48,19 @@ let resultado
 
 
 // funciones
-function inicializarCatalogoProductos() {
-    fetch("https://62e2a4b4b54fc209b87dbcaf.mockapi.io/catalogoProductos",{
-        method: "GET"
-    })
-    .then((resultado) => resultado.json())
-    .then((data) => {
-        
-        for (let i = 0; i < data.length; i++){
-            producto = new Producto(data[i].id, data[i].nombre, data[i].imagen, data[i].tipo, data[i].talle, data[i].marca, data[i].precio)
-            catalogoProductos.push(producto)
-            console.log(producto)
-        }
-        
-    })
-    
-    console.log(catalogoProductos)
-    
+async function inicializarCatalogoProductos() {
+    let data = await (await fetch("https://62e2a4b4b54fc209b87dbcaf.mockapi.io/catalogoProductos",{ method: "GET" })).json();
+    for (let i = 0; i < data.length; i++){
+        producto = new Producto(data[i].id, data[i].nombre, data[i].imagen, data[i].tipo, data[i].talle, data[i].marca, Math.round(data[i].precio));
+        catalogoProductos.push(producto)
+    }
 }
 
 
 function crearCarta(producto) {
     let crearCarta = `    
-    <div class="card col shadow-lg">
-    <img src="./imagenes/${producto.imagen}" class="card-img-top" alt="...">
+    <div class="card col-3 shadow-lg">
+    <img src="${producto.imagen}" class="card-img-top" alt="...">
         <div class="card-body">
             <h5 class="card-title">${producto.nombre}</h5>
             <p class="card-text">Talle: ${producto.talle}</p>
@@ -107,6 +96,7 @@ function guardarCarrito() {
 
 
 function crearCartaHtml() {
+    console.log(catalogoProductos);
     cardsDiv = document.getElementById("cards")
     catalogoProductos.forEach(producto => {
         console.log(catalogoProductos)
@@ -129,11 +119,10 @@ function agregarAlCarrito() {
 
 
 //funcion principal
-function main() {
-    inicializarCatalogoProductos()
-    console.log(producto)
-    crearCartaHtml()
-    guardarCarrito()
-    agregarAlCarrito()
+async function main() {
+    await inicializarCatalogoProductos();
+    crearCartaHtml();
+    guardarCarrito();
+    agregarAlCarrito();
 }
 main()
