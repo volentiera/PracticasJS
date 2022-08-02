@@ -43,8 +43,7 @@ let botonesEliminar
 let carritoGuardado
 let producto
 const iva = 0.21
-const searchInput = document.querySelector("[data-search]")
-
+const searchBar = document.getElementById("search")
 
 
 // funciones
@@ -71,6 +70,7 @@ function crearCarta(producto) {
     </div>
     `
     return crearCarta
+
 }
 
 
@@ -98,7 +98,7 @@ function guardarCarrito() {
 function crearCartaHtml() {
     cardsDiv = document.getElementById("cards")
     catalogoProductos.forEach(producto => {
-        cardsDiv.innerHTML += crearCarta(producto)
+            cardsDiv.innerHTML += crearCarta(producto)
     })
 }
 
@@ -114,24 +114,26 @@ function agregarAlCarrito() {
         })
     })
 }
-let variable
 
 //------------------------------------buscador---------------------------------------------
 function buscarCartas(){
-    searchInput.addEventListener("input", e =>{
-        const value = e.target.value.toLowerCase()
-        catalogoProductos.forEach(producto =>{
-            const esVisible = producto.nombre.toLowerCase().includes(value) || producto.marca.toLowerCase().includes(value)
-                console.log(esVisible)
-        })
+    searchBar.addEventListener("keyup", (e) =>{
+        const searchString = e.target.value
+        const productosFiltrados = catalogoProductos.filter((producto =>{
+            return (producto.nombre.includes(searchString) || producto.marca.includes(searchString))
+            
+        }))
+        console.log(productosFiltrados)
     })
 }
+
+
 
 //funcion principal
 async function main() {
     await inicializarCatalogoProductos()
     crearCartaHtml()
-    buscarCartas()
+    buscarCartas()//-------------------- llamo a la func
     guardarCarrito()
     agregarAlCarrito()
 }
