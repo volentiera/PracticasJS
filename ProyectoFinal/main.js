@@ -43,6 +43,7 @@ let botonesEliminar
 let carritoGuardado
 let producto
 const iva = 0.21
+const searchInput = document.querySelector("[data-search]")
 
 
 
@@ -113,12 +114,24 @@ function agregarAlCarrito() {
         })
     })
 }
+let variable
 
+//------------------------------------buscador---------------------------------------------
+function buscarCartas(){
+    searchInput.addEventListener("input", e =>{
+        const value = e.target.value.toLowerCase()
+        catalogoProductos.forEach(producto =>{
+            const esVisible = producto.nombre.toLowerCase().includes(value) || producto.marca.toLowerCase().includes(value)
+                console.log(esVisible)
+        })
+    })
+}
 
 //funcion principal
 async function main() {
     await inicializarCatalogoProductos()
     crearCartaHtml()
+    buscarCartas()
     guardarCarrito()
     agregarAlCarrito()
 }
