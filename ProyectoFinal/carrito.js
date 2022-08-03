@@ -1,12 +1,11 @@
-
 // dejo comentadas algunas cosas que no me salieron.
+
 
 //clases 
 
 
 class Carrito {
-    constructor(id) {
-        this.id = id
+    constructor() {
         this.productos = []
     }
 
@@ -21,7 +20,7 @@ class Carrito {
 }
 //todo lo global
 
-let carrito
+
 //let botonEliminar
 let divCarrito
 //let botonesEliminar
@@ -83,33 +82,35 @@ function actualizarCarrito(carrito) {
 function guardarCarrito() {
     window.addEventListener('DOMContentLoaded', (e) => {
         storage = JSON.parse((localStorage.getItem("carrito")))
-        carritoGuardado = new Carrito(storage.id, storage.productos)
+        carritoGuardado = new Carrito(storage.productos)
         storage.productos.forEach(producto => {
             carritoGuardado.productos.push(producto)
         })
         limpiarCarrito()
         actualizarCarrito(carritoGuardado)
+        
     })
 }
 
 
-// function eliminarDelCarrito(carritoGuardado) {
-//     botonesEliminar = document.getElementsByClassName("botonEliminar")
-//     arrayDeBotonesEliminar = Array.from(botonesEliminar)
-//     arrayDeBotonesEliminar.forEach(botonAlgo => {
-//         botonAlgo.addEventListener("click", (e) => {
-//             let productoSeleccionadoAEliminar = carritoGuardado.find(producto => producto.id == e.target.id)
-//             carrito.productos.splice(productoSeleccionadoAEliminar)
-//             limpiarCarrito()
-//             actualizarCarrito(carrito)
-//         })
-//     })
-// }
+function eliminarDelCarrito(carritoGuardado) {
+    botonesEliminar = document.getElementsByClassName("botonEliminar")
+    arrayDeBotonesEliminar = Array.from(botonesEliminar)
+    arrayDeBotonesEliminar.forEach(botonAlgo => {
+        botonAlgo.addEventListener("click", (e) => {
+            let productoSeleccionadoAEliminar = carritoGuardado.find(producto => producto.id == e.target.id)
+            carrito.productos.splice(productoSeleccionadoAEliminar)
+            limpiarCarrito()
+            actualizarCarrito(carrito)
+            
+        })
+    })
+}
 
 
 //funcion principal
 function main() {
     guardarCarrito()
-    // eliminarDelCarrito()
+    eliminarDelCarrito()
 }
 main()

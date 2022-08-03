@@ -17,8 +17,7 @@ class Producto {
 }
 
 class Carrito {
-    constructor(id) {
-        this.id = id
+    constructor() {
         this.productos = []
     }
 
@@ -33,17 +32,11 @@ class Carrito {
 }
 //todo lo global
 let catalogoProductos = []
-let cardsDiv
 let carrito
-let botones
-let arrayDeBotones
-let botonEliminar
-let divCarrito
-let botonesEliminar
-let carritoGuardado
 let producto
 const iva = 0.21
 const searchBar = document.getElementById("search")
+
 
 
 // funciones
@@ -80,37 +73,23 @@ function renovarStorage() {
 }
 
 
-function guardarCarrito() {
-    window.addEventListener('DOMContentLoaded', (e) => {
-        let storage = JSON.parse((localStorage.getItem("carrito")))
-        if (storage != null){
-            carritoGuardado = new Carrito(storage.id, storage.productos)
-            storage.productos.forEach(producto => {
-                carritoGuardado.productos.push(producto)
-            })
-        }
-    })
-}
-
-
-
-
 function crearCartaHtml() {
-    cardsDiv = document.getElementById("cards")
+    let cardsDiv = document.getElementById("cards")
     catalogoProductos.forEach(producto => {
             cardsDiv.innerHTML += crearCarta(producto)
     })
 }
 
 function agregarAlCarrito() {
-    carrito = new Carrito(1)
-    botones = document.getElementsByClassName("botonCompra")
-    arrayDeBotones = Array.from(botones)
+    carrito = new Carrito()
+    let botones = document.getElementsByClassName("botonCompra")
+    let arrayDeBotones = Array.from(botones)
     arrayDeBotones.forEach(boton => {
         boton.addEventListener("click", (e) => {
             let productoSeleccionado = catalogoProductos.find(producto => producto.id == e.target.id)
             carrito.productos.push(productoSeleccionado)
             renovarStorage()
+            console.log(carrito)
         })
     })
 }
@@ -134,7 +113,7 @@ async function main() {
     await inicializarCatalogoProductos()
     crearCartaHtml()
     buscarCartas()//-------------------- llamo a la func
-    guardarCarrito()
     agregarAlCarrito()
+
 }
 main()

@@ -16,6 +16,7 @@ let tipo
 let comentarios
 
 let contacto
+let contactosAlmacenados
 
 
 
@@ -86,16 +87,27 @@ function almacenarContactoLocalStorage() {
 }
 
 function obtenerContactoLocalStorage() {
-    let contactosAlmacenados = localStorage.getItem("Contactos")
+    contactosAlmacenados = localStorage.getItem("Contactos")
     if (contactosAlmacenados !== null) {
         contactos = JSON.parse(contactosAlmacenados)
     }
+}
+function subirDatosApi(){
+    fetch("https://62e2a4b4b54fc209b87dbcaf.mockapi.io/Comentarios", {
+        method: "POST",
+        body: contactosAlmacenados,
+        headers: {
+            "Content-type": "application/json"
+        }
+    }).then(response => response.json())
+    .then(data => console.log(data))
 }
 
 function main() {
     inicializarElementos()
     inicializarEventos()
     obtenerContactoLocalStorage()
+    subirDatosApi()
 }
 
 main()
