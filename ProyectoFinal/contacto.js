@@ -14,9 +14,8 @@ let apellido
 let email
 let tipo
 let comentarios
-
 let contacto
-let contactosAlmacenados
+
 
 
 
@@ -65,7 +64,7 @@ function validarFormulario(event) {
     contactos.push(contacto)
     formulario.reset()
     botonSubmit.addEventListener("click", alertSuccess(contacto))
-    almacenarContactoLocalStorage()
+    obtenerContactoLocalStorage()
     }else {
         botonSubmit.addEventListener("click", alertError())
     }
@@ -81,18 +80,12 @@ function alertSuccess(contacto) {
 }
 
 
-
-function almacenarContactoLocalStorage() {
-        localStorage.setItem("Contactos", JSON.stringify(contactos))
-}
-
 function obtenerContactoLocalStorage() {
-    contactosAlmacenados = localStorage.getItem("Contactos")
+    localStorage.setItem("Contactos", JSON.stringify(contactos[0]))
+    let contactosAlmacenados = localStorage.getItem("Contactos")
     if (contactosAlmacenados !== null) {
         contactos = JSON.parse(contactosAlmacenados)
     }
-}
-function subirDatosApi(){
     fetch("https://62e2a4b4b54fc209b87dbcaf.mockapi.io/Comentarios", {
         method: "POST",
         body: contactosAlmacenados,
@@ -100,14 +93,13 @@ function subirDatosApi(){
             "Content-type": "application/json"
         }
     }).then(response => response.json())
-    .then(data => console.log(data))
+    .then(data => data)
+    contactos = []
 }
 
 function main() {
     inicializarElementos()
     inicializarEventos()
-    obtenerContactoLocalStorage()
-    subirDatosApi()
 }
 
 main()

@@ -1,64 +1,17 @@
-// dejo comentadas algunas cosas que no me salieron.
 
 
-//clases 
 
 
-class Carrito {
-    constructor() {
-        this.productos = []
-    }
 
-    calcularTotal() {
-        let total = 0
-        for (let i = 0; i < this.productos.length; i++) {
-            total = total + this.productos[i].precio
-
-        }return Math.round(total)
-    }
-
-}
 //todo lo global
 
-
-//let botonEliminar
-let divCarrito
-//let botonesEliminar
-let carritoGuardado
+let divCarrito = null
 let storage
-let botonesEliminar
-let arrayDeBotonesEliminar
-let botonAlgo
+let carrito
+let producto
+let productoParseado
+const iva = 0.21
 // funciones
-
-
-function crearCarrito(producto) {
-    let crearCarrito = `
-    <div class="row border-bottom">
-    <div class="col-3">
-        <img src="${producto.imagen}" class="modificarImagenCarrito" alt="...">
-    </div>
-    <div class="col-9 d-flex justify-content-between align-items-center text-center">
-            <div class="col-1">
-                <h5>${producto.id}-</h5>
-            </div>
-            <div class="col">
-                <h5>${producto.nombre}</h5>
-            </div>
-            <div class="col">
-                <h5>Precio: $${producto.precio}</h5>
-            </div>
-            <div class="col">
-                <h5>Talle: ${producto.talle }</h5>
-            </div>
-            <div class="col">
-                <a class="btn btn-primary botonEliminar" id="${producto.id}">X</a>
-            </div>
-    </div>
-    </div>
-    `
-    return crearCarrito
-}
 
 
 function limpiarCarrito() {
@@ -66,51 +19,133 @@ function limpiarCarrito() {
     divCarrito.innerHTML = ""
 }
 
-function actualizarCarrito(carrito) {
-    divCarrito = document.getElementById("carrito")
-    carrito.productos.forEach(producto => {
-        divCarrito.innerHTML += crearCarrito(producto)
-    })
+function verTotalCarrito(carrito) {
+    if (divCarrito == null){
+    }else{
     divCarrito.innerHTML += `
     <div class="separador50"></div>
-    <h1 class="text-center">Precio Total: $ ${carrito.calcularTotal()}</h1>
+    <div class="d-flex justify-content-between align-items-center"">
+        <div>
+            <h1 class="text-center">Precio Total: $ ${carrito.calcularTotal()}</h1>
+        </div>
+        <div class="justify-content-end">
+            <button type="button" class="btn btn-primary" id="botonConfirmar">Confirmar Compra</button>
+            <button type="button" class="btn btn-danger" id="botonEliminar">Eliminar Articulos</button>
+        </div>
+    </div>
     <div class="separador50"></div>
     `
+    }
 }
 
+// window.addEventListener('DOMContentLoaded', (e) => {
+//     storage = JSON.parse((localStorage.getItem("carrito")))
+//     carritoGuardado = new Carrito(storage.productos)
+//     storage.productos.forEach(producto => {
+//         carritoGuardado.productos.push(producto)
+//     })
+//     limpiarCarrito()
+// })
+function crearCarrito(){
+    carrito.productos.forEach((element,index) => {
+        divCarrito = document.getElementById("carrito")
+        divCarrito.innerHTML +=
+        `
+        <div id="producto-${index}" class="row border-bottom">
+            <div class="col-3">
+                <img src="${element.imagen}" class="modificarImagenCarrito" alt="..."/>
+            </div>
+            <div class="col-9 d-flex justify-content-between align-items-center text-center">
+                <div class="col-1">
+                    <h5>${index+1}-</h5>
+                </div>
+                <div class="col">
+                    <h5>${element.nombre}</h5>
+                </div>
+                <div class="col">
+                    <h5>Precio: $${element.precio}</h5>
+                </div>
+                <div class="col">
+                    <h5>Talle: ${element.talle}</h5>
+                </div>
 
-function guardarCarrito() {
-    window.addEventListener('DOMContentLoaded', (e) => {
-        storage = JSON.parse((localStorage.getItem("carrito")))
-        carritoGuardado = new Carrito(storage.productos)
-        storage.productos.forEach(producto => {
-            carritoGuardado.productos.push(producto)
-        })
-        limpiarCarrito()
-        actualizarCarrito(carritoGuardado)
-        
+            </div>
+        </div>
+        `
     })
 }
+function parseJsonToProducto(object) {
+    let id = object.id
+    let nombre = object.nombre
+    let imagen = object.imagen
+    let tipo = object.tipo
+    let talle = object.talle
+    let marca = object.marca
+    let precio = object.precio
+    return new Producto(id, nombre, imagen, tipo, talle, marca, Math.round(precio))
+}
 
+window.addEventListener('DOMContentLoaded', () => {
+    carrito = new Carrito()
+    storage = JSON.parse((localStorage.getItem("carrito")))
+    if(storage != null) {
+        storage.productos.map(element => {
+            productoParseado = parseJsonToProducto(element)
+            carrito.productos.push(productoParseado)
+        })
+    }
+    crearCarrito()
+    verTotalCarrito(carrito)
+    comprarYSubirApi()
+    eliminarDelCarrito()
+    
+})
 
-function eliminarDelCarrito(carritoGuardado) {
-    botonesEliminar = document.getElementsByClassName("botonEliminar")
-    arrayDeBotonesEliminar = Array.from(botonesEliminar)
-    arrayDeBotonesEliminar.forEach(botonAlgo => {
-        botonAlgo.addEventListener("click", (e) => {
-            let productoSeleccionadoAEliminar = carritoGuardado.find(producto => producto.id == e.target.id)
-            carrito.productos.splice(productoSeleccionadoAEliminar)
+function borrarTodo(){
+        carrito = []
+        productoParseado = []
+        localStorage.clear()
+}
+function comprarYSubirApi(){
+    let botones = document.getElementById("botonConfirmar")
+    if (botones != null){
+        botones.addEventListener("click", () => {
+            subirApi()
+            borrarTodo()
             limpiarCarrito()
-            actualizarCarrito(carrito)
-            
-        })
     })
 }
+}
+function subirApi(){
+    localStorage.getItem("carrito",JSON.stringify(carrito))
+    let carritoAlmacenado = localStorage.getItem("carrito")
+    if (carritoAlmacenado !== null) {
+        contactos = JSON.parse(carritoAlmacenado)
+        console.log(carritoAlmacenado)
+    }
+    fetch ("https://62e2a4b4b54fc209b87dbcaf.mockapi.io/CarritoComprado",{
+        method: "POST",
+        body: carritoAlmacenado,
+        headers: {
+            "Content-type": "application/json"
+        }
+    }).then(response => response.json())
+    .then(data => data)
+}
 
+function eliminarDelCarrito(){
+    let botones = document.getElementById("botonEliminar")
+    if (botones != null){
+        botones.addEventListener("click", () => {
+            borrarTodo()
+            limpiarCarrito()
+        })
+    }
+}
 
 //funcion principal
-function main() {
-    guardarCarrito()
-    eliminarDelCarrito()
-}
-main()
+// function main() {
+//     eliminarDelCarrito()
+// }
+
+// main()

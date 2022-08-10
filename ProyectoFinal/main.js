@@ -3,39 +3,28 @@
 
 //clases 
 
-class Producto {
-    constructor(id, nombre, imagen, tipo, talle, marca, precio) {
-        this.id = id
-        this.nombre = nombre
-        this.imagen = imagen
-        this.tipo = tipo
-        this.talle = talle
-        this.marca = marca
-        this.precio = (precio * iva) + precio
-    }
 
+function parseJsonToProducto(object) {
+    let id = object.id
+    let nombre = object.nombre
+    let imagen = object.imagen
+    let tipo = object.tipo
+    let talle = object.talle
+    let marca = object.marca
+    let precio = object.precio
+    return new Producto(id, nombre, imagen, tipo, talle, marca, precio)
 }
 
-class Carrito {
-    constructor() {
-        this.productos = []
-    }
-
-    calcularTotal() {
-        let total = 0
-        for (let i = 0; i < this.productos.length; i++) {
-            total = total + this.productos[i].precio
-
-        }return total
-    }
-
-}
 //todo lo global
 let catalogoProductos = []
 let carrito
 let producto
 const iva = 0.21
-const searchBar = document.getElementById("search")
+let divCartas
+
+
+
+
 
 
 
@@ -47,7 +36,6 @@ async function inicializarCatalogoProductos() {
         catalogoProductos.push(producto)
     }
 }
-
 
 function crearCarta(producto) {
     let crearCarta = `    
@@ -65,7 +53,72 @@ function crearCarta(producto) {
     return crearCarta
 
 }
+function limpiarCartas() {
+    divCartas = document.getElementById("cards")
+    divCartas.innerHTML = ""
+}
 
+
+function cartasIndumentaria(){
+    let buscar = catalogoProductos.filter(producto => producto.tipo == "indumentaria")
+    let botonIndumentaria = document.getElementById("botonIndumentaria")
+        botonIndumentaria.onclick = ()=>{
+            limpiarCartas()
+            let cardsDiv = document.getElementById("cards")
+            buscar.forEach(producto => {
+                    cardsDiv.innerHTML += crearCarta(producto)
+            })
+            let botones = document.getElementsByClassName("botonCompra")
+            let arrayDeBotones = Array.from(botones)
+            arrayDeBotones.forEach(boton => {
+                boton.addEventListener("click", (e) => {
+                    let productoSeleccionado = buscar.find(producto => producto.id == e.target.id)
+                    carrito.productos.push(productoSeleccionado)
+                    renovarStorage()
+                })
+            })
+        }
+}
+function cartasCalzado(){
+    let buscar = catalogoProductos.filter(producto => producto.tipo == "calzado")
+    let botonCalzado = document.getElementById("botonCalzado")
+        botonCalzado.onclick = ()=>{
+            limpiarCartas()
+            let cardsDiv = document.getElementById("cards")
+            buscar.forEach(producto => {
+                    cardsDiv.innerHTML += crearCarta(producto)
+            })
+            let botones = document.getElementsByClassName("botonCompra")
+            let arrayDeBotones = Array.from(botones)
+            arrayDeBotones.forEach(boton => {
+                boton.addEventListener("click", (e) => {
+                    let productoSeleccionado = buscar.find(producto => producto.id == e.target.id)
+                    carrito.productos.push(productoSeleccionado)
+                    renovarStorage()
+                })
+            })
+        }
+}
+function cartasAccesorio(){
+    let buscar = catalogoProductos.filter(producto => producto.tipo == "accesorio")
+    let botonAccesorio = document.getElementById("botonAccesorio")
+        botonAccesorio.onclick = ()=>{
+            limpiarCartas()
+            let cardsDiv = document.getElementById("cards")
+            buscar.forEach(producto => {
+                    cardsDiv.innerHTML += crearCarta(producto)
+            })
+            let botones = document.getElementsByClassName("botonCompra")
+            let arrayDeBotones = Array.from(botones)
+            arrayDeBotones.forEach(boton => {
+                boton.addEventListener("click", (e) => {
+                    let productoSeleccionado = buscar.find(producto => producto.id == e.target.id)
+                    carrito.productos.push(productoSeleccionado)
+                    renovarStorage()
+                })
+            })
+        }
+}
 
 function renovarStorage() {
     localStorage.removeItem("carrito")
@@ -81,7 +134,6 @@ function crearCartaHtml() {
 }
 
 function agregarAlCarrito() {
-    carrito = new Carrito()
     let botones = document.getElementsByClassName("botonCompra")
     let arrayDeBotones = Array.from(botones)
     arrayDeBotones.forEach(boton => {
@@ -89,31 +141,39 @@ function agregarAlCarrito() {
             let productoSeleccionado = catalogoProductos.find(producto => producto.id == e.target.id)
             carrito.productos.push(productoSeleccionado)
             renovarStorage()
-            console.log(carrito)
         })
     })
 }
 
-//------------------------------------buscador---------------------------------------------
-function buscarCartas(){
-    searchBar.addEventListener("keyup", (e) =>{
-        const searchString = e.target.value
-        const productosFiltrados = catalogoProductos.filter((producto =>{
-            return (producto.nombre.includes(searchString) || producto.marca.includes(searchString))
-            
-        }))
-        console.log(productosFiltrados)
-    })
+
+window.addEventListener('DOMContentLoaded', () => {
+    carrito = new Carrito()
+    storage = JSON.parse((localStorage.getItem("carrito")))
+    if(storage != null) {
+        storage.productos.map(element => {
+            let productoParseado = parseJsonToProducto(element)
+            carrito.productos.push(productoParseado)
+        })
+    } 
+})
+function botonTodo(){
+    let botonTodo = document.getElementById("botonTodo")
+    botonTodo.onclick = ()=>{
+        limpiarCartas()
+        crearCartaHtml()
+        agregarAlCarrito()
+    }
 }
-
-
 
 //funcion principal
 async function main() {
     await inicializarCatalogoProductos()
     crearCartaHtml()
-    buscarCartas()//-------------------- llamo a la func
     agregarAlCarrito()
-
+    cartasIndumentaria()
+    cartasCalzado()
+    cartasAccesorio()
+    botonTodo()
+    
 }
 main()
